@@ -1,0 +1,11 @@
+name: uw_mile_high_interim_report
+dependencies:
+- python
+- autopep8
+- pip
+- pandas
+- matplotlib
+- jupyter
+- pip:
+- salesforce-reporting==0.1.3
+    

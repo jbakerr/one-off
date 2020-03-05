@@ -1,0 +1,11 @@
+name: nola_male_african_american_data
+dependencies:
+- python
+- autopep8
+- pip
+- pandas
+- matplotlib
+- jupyter
+- pip:
+- salesforce-reporting==0.1.3
+    

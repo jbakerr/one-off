@@ -1,0 +1,11 @@
+name: fight_for_children_ward8
+dependencies:
+- python
+- autopep8
+- pip
+- pandas
+- matplotlib
+- jupyter
+- pip:
+- salesforce-reporting==0.1.3
+    
