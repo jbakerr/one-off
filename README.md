@@ -17,6 +17,12 @@ git clone https://github.com/College-Track/one-off
 cd one-off
 ```
 
+Due to the package for downloading salesforce data being unmaintained you have to manually install that packages from a github repo
+
+```
+pip install -e git+https://github.com/jbakerr/salesforce-reporting@1b8f4777281bb95892325168328a65581121ad9c#egg=salesforce_reporting
+```
+
 * For any time after initial install just run the second command
 ```
 conda env create -f environment.yml
