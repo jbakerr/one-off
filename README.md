@@ -27,7 +27,7 @@ conda activate env
 Due to the package for downloading salesforce data being unmaintained you have to manually install that packages from a github repo
 
 ```
-pip install -e git+https://github.com/jbakerr/salesforce-reporting@1b8f4777281bb95892325168328a65581121ad9c#egg=salesforce_reporting
+pip install git+https://github.com/jbakerr/salesforce-reporting@1b8f4777281bb95892325168328a65581121ad9c#egg=salesforce_reporting
 ```
 
 Copy the example .env file
