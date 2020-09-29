@@ -25,26 +25,30 @@ rf = Reportforce(session_id=sf.session_id, instance_url=sf.sf_instance)
 # query = """ """
 student_life = SF_SOQL("student_life", soql.student_life)
 student_life.load_from_sf_soql(sf)
-student_life.read_file(subfolder="raw", file_type=".csv", file_level="child")
+# student_life.write_file()
+# student_life.read_file(subfolder="raw", file_type=".csv", file_level="child")
 student_life.date_columns = ["SLA_Start_Date__c", "SLA_End_Date__c"]
 student_life.adjust_date()
 
-bank_book = SF_SOQL("bank_book", soql.bank_book)
-bank_book.load_from_sf_soql(sf)
-bank_book.read_file(subfolder="raw", file_type=".csv", file_level="child")
-bank_book.date_columns = ["BB_Date__c"]
-bank_book.adjust_date()
+# bank_book = SF_SOQL("bank_book", soql.bank_book)
+# bank_book.load_from_sf_soql(sf)
+# # bank_book.write_file()
+# bank_book.read_file(subfolder="raw", file_type=".csv", file_level="child")
+# bank_book.date_columns = ["BB_Date__c"]
+# bank_book.adjust_date()
 
 
-scholarships = SF_SOQL("scholarships", soql.scholarships)
-scholarships.load_from_sf_soql(sf)
-scholarships.read_file(subfolder="raw", file_type=".csv", file_level="child")
-scholarships.date_columns = ["SA_Date_Applied_date__c"]
-scholarships.adjust_date()
+# scholarships = SF_SOQL("scholarships", soql.scholarships)
+# scholarships.load_from_sf_soql(sf)
+# # scholarships.write_file()
+# scholarships.read_file(subfolder="raw", file_type=".csv", file_level="child")
+# scholarships.date_columns = ["SA_Date_Applied_date__c"]
+# scholarships.adjust_date()
 
 
 academic_terms = SF_SOQL("academic_terms", soql.academic_terms)
 academic_terms.load_from_sf_soql(sf)
+# academic_terms.write_file()
 academic_terms.read_file(subfolder="raw", file_type=".csv", file_level="child")
 academic_terms.date_columns = ["AS_Start_Date__c", "AS_End_Date__c"]
 academic_terms.adjust_date()
@@ -61,36 +65,56 @@ student_life_merged = student_life_merged[
     )
 ]
 
-student_life_merged.to_csv("../data/processed/student_life.csv")
-
-
-# Bank Book
-bank_book_merged = bank_book.df.merge(
-    academic_terms.df, left_on="BB_Student__c", right_on="AS_Student__c", how="left"
+student_life_merged = student_life_merged.sort_values(
+    by=["SLA_Student__c", "AS_Start_Date__c"]
 )
 
-bank_book_merged = bank_book_merged[
-    bank_book_merged["BB_Date__c"].between(
-        bank_book_merged["AS_Start_Date__c"], bank_book_merged["AS_End_Date__c"]
-    )
-]
+df = student_life_merged.drop_duplicates(
+    subset=["SLA_Student__c", "SLA_Id"], keep="first"
+)
 
-bank_book_merged.to_csv("../data/processed/bank_book.csv")
+sl = df[df["SLA_Start_Date__c"] > df["AS_Start_Date__c"]]
+
+# student_life_merged.to_csv("../data/processed/student_life.csv")
+
+
+# # Bank Book
+# bank_book_merged = bank_book.df.merge(
+#     academic_terms.df, left_on="BB_Student__c", right_on="AS_Student__c", how="left"
+# )
+
+# bank_book_merged = bank_book_merged[
+#     bank_book_merged["BB_Date__c"].between(
+#         bank_book_merged["AS_Start_Date__c"], bank_book_merged["AS_End_Date__c"]
+#     )
+# ]
+
+# bank_book_merged.to_csv("../data/processed/bank_book.csv")
 
 
 # Scholarships
 
 scholarships_merged = scholarships.df.merge(
-    academic_terms.df, left_on="SA_Student__c", right_on="AS_Student__c", how="left"
+    academic_terms.df,
+    left_on=["SA_Student__c", "SA_High_School_Class__c", "SA_HS_Grade__c"],
+    right_on=["AS_Student__c", "AS_High_School_Class__c", "AS_Grade__c"],
+    how="left",
 )
 
-scholarships_merged = scholarships_merged[
-    scholarships_merged["SA_Date_Applied_date__c"].between(
-        scholarships_merged["AS_Start_Date__c"], scholarships_merged["AS_End_Date__c"]
-    )
+scholarship_subset = scholarships_merged[
+    ~pd.isna(scholarships_merged["AS_Academic_Year__c"])
 ]
+scholarship_subset = scholarship_subset.drop_duplicates(
+    ["SA_Id", "AS_Academic_Year__c"]
+)
 
-scholarships_merged.to_csv("../data/processed/scholarships.csv")
+# scholarships_merged = scholarships_merged[
+#     scholarships_merged["SA_Date_Applied_date__c"].between(
+#         scholarships_merged["AS_Start_Date__c"], scholarships_merged["AS_End_Date__c"]
+#     )
+# ]
+
+scholarship_subset.to_csv("../data/processed/scholarships.csv")
 
 data_dict = {
     "SA_Id": "Id",
@@ -99,7 +123,9 @@ data_dict = {
 }
 
 
-data = generate_data_dict(bank_book_merged, data_dict)
+data = generate_data_dict(scholarship_subset, data_dict)
 
-success_df, fail_df = sf_bulk(bank_book_merged, "Bank_Book__c", data, sf,)
+success_df, fail_df = sf_bulk(
+    scholarships_merged, "Scholarship_Application__c", data, sf,
+)
 

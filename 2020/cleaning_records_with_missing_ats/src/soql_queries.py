@@ -4,7 +4,9 @@ Student__c,
 Semester__r.Global_Academic_Semester__r.Name, 
 Semester__r.Academic_Year__r.Name, 
 Start_Date__c, 
-End_Date__c
+End_Date__c,
+CreatedById, 
+CreatedDate
 FROM Student_Life_Activity__c
 WHERE Semester__c = NULL 
 AND Student__r.SITE__c != '0011M00002GdtrEQAR'
@@ -43,6 +45,8 @@ Start_Date__c,
 End_Date__c,
 Global_Academic_Semester__r.Name, 
 Student__c, 
-Academic_Year__c
+Academic_Year__c,
+Grade__c,
+High_School_Class__c
 FROM Academic_Semester__c
 """
