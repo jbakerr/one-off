@@ -47,9 +47,6 @@ df = pd.read_pickle('../data/processed/merged_data.pkl')
 
 
 
-```python
-df.columns
-```
 
 #### Gender / Age / Student Type Breakdown
 
