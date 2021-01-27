@@ -71,6 +71,35 @@ group_3 = pd.crosstab(
 
 group_3.reset_index().to_csv("../data/processed/grad_rate_attended_school.csv")
 
+# Group 4 - Students who graduated from a school within 6 years and attended that same school within 6 years
+def determine_year_6_status(grad_school, six_year_grad_status, year_six_school):
+    if six_year_grad_status == True:
+        return grad_school
+    else:
+        return year_six_school
+
+
+df_sub = data.df[data.df["AS_Grade__c"] == "Year 6"]
+
+df_sub["year_six_school_or_grad"] = df_sub.apply(
+    lambda x: determine_year_6_status(
+        x["C_College_4_Year_Degree_Earned__c"],
+        x["C_Graduated_4_Year_Degree_6_Years__c"],
+        x["A_School__c"],
+    ),
+    axis=1,
+)
+
+group_4 = pd.crosstab(
+    index=[df_sub["A_SITE__c"], df_sub["year_six_school_or_grad"]],
+    columns=df_sub["C_Graduated_4_Year_Degree_6_Years__c"],
+    values=data.df["AS_Student__c"],
+    aggfunc="nunique",
+    margins=True,
+)
+
+group_4.reset_index().to_csv("../data/processed/grad_rate_six_year_school.csv")
+
 
 # Sample for saving data
 # data.write_file(subfolder="interim", file_type=".pkl")
