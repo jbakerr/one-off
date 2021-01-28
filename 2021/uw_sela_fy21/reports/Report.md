@@ -110,7 +110,20 @@ def create_count_percent_cross_tab(df, row_column, column_column, row_name, subs
 ```
 
 ```python
-create_count_percent_cross_tab(df_2021, 'C_FA_Req_FAFSA__c', 'RT_RecordType__c', 'FAFSA Status')
+df_2021_us_citizen = df_2021[df_2021.C_Citizen_c__c == 'US Citizen']
+df_2021_us_citizen_pr = df_2021[df_2021.C_Citizen_c__c != 'Other']
+```
+
+Not Including permanent residence.
+
+```python
+create_count_percent_cross_tab(df_2021_us_citizen, 'C_FA_Req_FAFSA__c', 'RT_RecordType__c', 'FAFSA Status')
+```
+
+Including permanent residence.
+
+```python
+create_count_percent_cross_tab(df_2021_us_citizen_pr, 'C_FA_Req_FAFSA__c', 'RT_RecordType__c', 'FAFSA Status')
 ```
 
 #### % and # of our Class of 2021 NOLA high school seniors who qualify for TOPS eligibility.
@@ -312,8 +325,4 @@ h3, .h3 {
 
 
 </style>
-```
-
-```python
-
 ```

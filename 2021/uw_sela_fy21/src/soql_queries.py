@@ -19,6 +19,7 @@ Student__r.Four_Year_College_Acceptances__c,
 Student__r.Ethnic_Background__c,
 Attendance_Rate__c,
 RecordType.Name,
+Student__r.Citizen_c__c,
 Student__r.Most_Recent_GPA_Cumulative__c
 FROM Academic_Semester__c
 WHERE Global_Academic_Semester__r.Name LIKE '%Fall 2020-21%' AND 
