@@ -82,7 +82,7 @@ pd.crosstab([df['Income Bucket']], df.RT_RecordType__c, margins=True, colnames=[
 The totals here don't add up to the above numbers due to us not having accurate location data on some students.
 
 ```python
-pd.crosstab([df.C_Gender__c, df.Parish], df.RT_RecordType__c, margins=True, colnames=[
+pd.crosstab([df.C_Gender__c, df.Parish.fillna('Missing')], df.RT_RecordType__c, margins=True, colnames=[
             'Student Type'], rownames=['Gender', 'Parish'], margins_name='Total')
 ```
 
