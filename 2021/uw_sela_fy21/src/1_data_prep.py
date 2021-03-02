@@ -99,4 +99,3 @@ df["Income Bucket"] = df.apply(
 # saving results
 
 df.to_pickle("../data/processed/merged_data.pkl")
-
