@@ -120,6 +120,10 @@ new_ps_columns = {
     "DOOR": "Previous year DOOR award (FY21)",
     "C_STATESTUDENTID__c": "College ID",
     "C_Current_CC_Advisor2__c": "Current CC Advisor",
+    "C_Current_Minor__c": "Minor",
+    "C_Current_Major__c": "Major",
+    "C_Current_Major_specific__c": "Major (Specific)",
+    "C_Current_Second_Major__c": "Second Major",
 }
 
 

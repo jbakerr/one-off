@@ -83,7 +83,11 @@ Anticipated_Date_of_Transfer__r.Name,
 Current_CC_Advisor2__c,
 STATESTUDENTID__c,
 Ethnic_Background__c,
-Gender__c
+Gender__c,
+Current_Minor__c, 
+Current_Major__c, 
+Current_Major_specific__c, 
+Current_Second_Major__c
 FROM Contact
 WHERE College_Track_Status__c IN ('15A', '16A')
 AND Site__r.Name != 'College Track Arlen'
